@@ -47,7 +47,7 @@ for file_path in "${INPUT_FILES[@]}"; do
             # Fallback for Windows without symlink privileges: junction for
             # directories (no elevation needed), copy for files.
             if [[ -d "$resolved_path" ]]; then
-                cmd //c "mklink /J \"$(cygpath -w "$dest")\" \"$(cygpath -w "$resolved_path")\"" > /dev/null
+                powershell -NoProfile -Command                     "New-Item -ItemType Junction -Path '$(cygpath -w "$dest")' -Target '$(cygpath -w "$resolved_path")' | Out-Null"
             else
                 cp -f "$resolved_path" "$dest"
             fi
